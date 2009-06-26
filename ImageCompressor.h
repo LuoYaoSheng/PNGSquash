@@ -1,0 +1,35 @@
+//
+//  ImageCompressor.h
+//  PNGSquash
+//
+//  Created by Michael Sanders on 6/15/09.
+//  Copyright 2009 Michael Sanders. All rights reserved.
+
+#import <Foundation/Foundation.h>
+
+@interface ImageCompressor : NSObject
+{
+	NSArray *outfiles; // The files to be compressed
+	NSString *outfile; // The file currently being compressed
+	NSString *infile; // The file moved to the trash
+	NSTask *currentTask;
+	unsigned int imageIndex, progIndex; // Index of current image/compressor
+	unsigned int level; // Compression level
+	unsigned int outfilesCount;
+	unsigned int compressorCount; // Count of compressors being used
+
+	SEL didEndSelector;
+	id delegate, compressDelegate;
+}
+
+@property (nonatomic, retain) id delegate;
+@property (readonly) unsigned int compressorCount;
+
+- (void)compressFiles:(NSArray *)files
+              atLevel:(unsigned int)compressLevel
+       didEndSelector:(SEL)selector
+			   object:(id)object;
+- (NSError *)cancelCompressing;
+- (NSError *)undoMoveToTrash;
+
+@end
