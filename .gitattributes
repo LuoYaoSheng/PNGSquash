@@ -1,0 +1,6 @@
+# Treat Xcode project files as binary
+*.pbxproj -crlf -diff -merge
+pngcrush -crlf -diff -merge
+pngout -crlf -diff -merge
+optipng -crlf -diff -merge
+advpng -crlf -diff -merge
