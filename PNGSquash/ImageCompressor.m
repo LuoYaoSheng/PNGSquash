@@ -45,7 +45,7 @@
 
 	// Set up options
 	level = compressLevel;
-	compressorCount = (level >= 7) ? 4 : (level > 4 ? 3 : 2);
+	compressorCount = level > 4 ? 3 : 2;
 
 	didEndSelector = selector;
 	outfilesCount = [outfiles count];
@@ -108,9 +108,6 @@
 		levelStr = [NSString stringWithFormat:@"-z%d", (level < 5 ? 1 : level - 3)];
 		[self runTask:@"advpng" withArgs:[NSArray arrayWithObjects: @"-q",
 		                                  levelStr, outfile, nil]];
-	} else if (progIndex == 3) {
-		[self runTask:@"pngout" withArgs:[NSArray arrayWithObjects:@"-q",
-		                                  outfile, nil]];
 	}
 
 	progIndex++;
