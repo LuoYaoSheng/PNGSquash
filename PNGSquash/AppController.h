@@ -10,6 +10,9 @@
 @class ImageCompressor;
 @class LoadingViewController;
 
+extern NSString * const windowPosKey;
+extern NSString * const squashLevelKey;
+
 @interface AppController : NSObject
 {
 	IBOutlet DragView *dragView;

@@ -11,6 +11,9 @@
 #import "LoadingViewController.h"
 #import "TableData.h"
 
+NSString * const windowPosKey = @"LastWindowPosition";
+NSString * const squashLevelKey = @"LastSquashLevel";
+
 // Easy-to-use macro for alert errors
 // NOTE: Remember, this is not modal
 #define showAlertSheetWithError(error, window) [[NSAlert alertWithError:(error)] beginSheetModalForWindow:(window) modalDelegate:nil didEndSelector:NULL contextInfo:NULL]
@@ -30,7 +33,7 @@
 
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	// Move window to previous position
-	NSString *coordinateString = [userDefaults valueForKey:@"Last Window Position"];
+	NSString *coordinateString = [userDefaults valueForKey:windowPosKey];
 	NSArray *coordinates = [coordinateString componentsSeparatedByString:@" "];
 	if (coordinates != nil) {
 		NSRect windowFrame = [mainWindow frame];
@@ -40,7 +43,7 @@
 	}
 
 	// Change slider to previous position
-	NSNumber *sliderValue = [userDefaults valueForKey:@"Last Squash Level"];
+	NSNumber *sliderValue = [userDefaults valueForKey:squashLevelKey];
 	if (sliderValue != nil) {
 		[levelSlider setIntValue:[sliderValue intValue]];
 	}
@@ -211,13 +214,13 @@
 	NSPoint origin = [mainWindow frame].origin;
 	NSString *points = [[NSString alloc] initWithFormat:@"%.f %.f", origin.x, origin.y];
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	[userDefaults setObject:points forKey:@"Last Window Position"];
+	[userDefaults setObject:points forKey:windowPosKey];
 	DLog(@"Saving coordinates: %@", points);
 	[points release];
 
 	// Save previous squash level
 	NSNumber *sliderValue = [NSNumber numberWithInt:[levelSlider intValue]];
-	[userDefaults setObject:sliderValue forKey:@"Last Squash Level"];
+	[userDefaults setObject:sliderValue forKey:squashLevelKey];
 	DLog(@"Saving squash level: %@", sliderValue);
 }
 
