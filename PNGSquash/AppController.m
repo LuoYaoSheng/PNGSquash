@@ -26,11 +26,6 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 	[dragView registerForDraggedTypes:types];
 	[types release];
 
-	loadingViewController = [[LoadingViewController alloc] init];
-	// loadingView is really a DragView; casting here removes a warning
-	DragView *loadingView = (DragView *)[loadingViewController view];
-	[loadingView setDelegate:self];
-
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	// Move window to previous position
 	NSString *coordinateString = [userDefaults valueForKey:windowPosKey];
@@ -51,6 +46,7 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 
 - (void)dealloc
 {
+	[loadingViewController release];
 	[dragView setDelegate:nil];
 	[NSApp setDelegate:nil];
 	[super dealloc];
@@ -77,6 +73,13 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 	// Close sheet
 	[configureSheet orderOut:nil];
 	[NSApp endSheet:configureSheet];
+
+	if (loadingViewController == nil) {
+		loadingViewController = [[LoadingViewController alloc] init];
+		// loadingView is really a DragView; casting here removes a warning
+		DragView *loadingView = (DragView *)[loadingViewController view];
+		[loadingView setDelegate:self];
+	}
 
 	// The user dragged to the table view before pressing "Done"
 	if ([loadingViewController view] == [mainWindow contentView]) {
@@ -109,6 +112,7 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 - (void)cleanupView
 {
 	[loadingViewController setDelegate:nil];
+	[images setDelegate:nil];
 	[images release];
 	images = nil;
 	[loadingViewController finishLoading];
