@@ -274,6 +274,7 @@
 {
 	NSPasteboard *paste = [sender draggingPasteboard];
 	imagefiles = [[paste propertyListForType:@"NSFilenamesPboardType"] retain];
+	[NSApp activateIgnoringOtherApps:YES];
 	[self showConfigureSheet];
 
 	return YES;
