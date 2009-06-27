@@ -28,15 +28,21 @@
 	DragView *loadingView = (DragView *)[loadingViewController view];
 	[loadingView setDelegate:self];
 
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	// Move window to previous position
-	NSString *coordinateString = [[NSUserDefaults standardUserDefaults]
-	                              valueForKey:@"Last Window Position"];
+	NSString *coordinateString = [userDefaults valueForKey:@"Last Window Position"];
 	NSArray *coordinates = [coordinateString componentsSeparatedByString:@" "];
 	if (coordinates != nil) {
 		NSRect windowFrame = [mainWindow frame];
 		windowFrame.origin.x = [[coordinates objectAtIndex:0] intValue];
 		windowFrame.origin.y = [[coordinates objectAtIndex:1] intValue];
 		[mainWindow setFrame:windowFrame display:NO];
+	}
+
+	// Change slider to previous position
+	NSNumber *sliderValue = [userDefaults valueForKey:@"Last Squash Level"];
+	if (sliderValue != nil) {
+		[levelSlider setIntValue:[sliderValue intValue]];
 	}
 }
 
@@ -68,12 +74,14 @@
 	// Close sheet
 	[configureSheet orderOut:nil];
 	[NSApp endSheet:configureSheet];
+
 	// The user dragged to the table view before pressing "Done"
 	if ([loadingViewController view] == [mainWindow contentView]) {
 		[loadingViewController resetViewToDefaults];
 	} else { // The user dragged to the normal, dotted view
 		[loadingViewController setAsContentViewFor:mainWindow];
 	}
+
 	[loadingViewController setDelegate:self];
 
 	// Disable close button while compressing
@@ -196,14 +204,21 @@
 	return NSTerminateNow;
 }
 
-// Save window coordinates on exit
+// Save user defaults when app is quit
 - (void)applicationWillTerminate:(NSNotification *)note
 {
+	// Save window coordinates
 	NSPoint origin = [mainWindow frame].origin;
 	NSString *points = [[NSString alloc] initWithFormat:@"%.f %.f", origin.x, origin.y];
-	[[NSUserDefaults standardUserDefaults] setObject:points forKey:@"Last Window Position"];
-	DLog(@"Saving coordinates %@", points);
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	[userDefaults setObject:points forKey:@"Last Window Position"];
+	DLog(@"Saving coordinates: %@", points);
 	[points release];
+
+	// Save previous squash level
+	NSNumber *sliderValue = [NSNumber numberWithInt:[levelSlider intValue]];
+	[userDefaults setObject:sliderValue forKey:@"Last Squash Level"];
+	DLog(@"Saving squash level: %@", sliderValue);
 }
 
 #pragma mark Menu items
