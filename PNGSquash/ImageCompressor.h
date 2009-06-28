@@ -7,6 +7,13 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol ImageCompressorDelegate <NSObject>
+
+- (void)compressedFile:(NSString *)infile toFile:(NSString *)outfile;
+- (BOOL)runCompressor:(NSString *)compressor forFile:(int)fileNum;
+
+@end
+
 @interface ImageCompressor : NSObject
 {
 	NSArray *outfiles; // The files to be compressed
@@ -20,8 +27,9 @@
 	unsigned int outfilesCount;
 	unsigned int compressorCount; // Count of compressors being used
 
+	id <ImageCompressorDelegate> delegate;
 	SEL didEndSelector;
-	id delegate, compressDelegate;
+	id compressDelegate;
 }
 
 @property (nonatomic, retain) id delegate;

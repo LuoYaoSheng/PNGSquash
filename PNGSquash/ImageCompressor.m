@@ -68,10 +68,7 @@
 	if (progIndex >= compressorCount) {
 		if (delegate && [delegate respondsToSelector:
 							@selector(compressedFile:toFile:)]) {
-			// Gets rid of warnings about unknown method
-	        [delegate performSelector:@selector(compressedFile:toFile:)
-						   withObject:infile
-						   withObject:outfile];
+			[delegate compressedFile:infile toFile:outfile];
 		}
 		progIndex = 0;
 		imageIndex++;

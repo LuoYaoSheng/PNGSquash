@@ -6,8 +6,8 @@
 //  Copyright 2009 Michael Sanders. All rights reserved.
 
 #import <Cocoa/Cocoa.h>
+#import "ImageCompressor.h"
 @class DragView;
-@class ImageCompressor;
 @class LoadingViewController;
 @class PreferenceController;
 
@@ -15,7 +15,7 @@ extern NSString * const windowPosKey;
 extern NSString * const squashLevelKey;
 extern NSString * const pngoutPathKey;
 
-@interface AppController : NSObject
+@interface AppController : NSObject <ImageCompressorDelegate>
 {
 	IBOutlet DragView *dragView;
 	IBOutlet NSWindow *mainWindow;
