@@ -1,4 +1,4 @@
-#[Download here![](http://img29.imageshack.us/img29/5589/squash.png)](http://s3.amazonaws.com/PNGSquash/PNGSquash.app.tgz)
+#[Download here![](http://img29.imageshack.us/img29/5589/squash.png)](http://s3.amazonaws.com/PNGSquash/PNGSquash.tar.gz)
 
 ## Description
 
