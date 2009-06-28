@@ -97,6 +97,7 @@ NSString * const pngoutPathKey  = @"pngoutPath";
 
 - (void)showConfigureSheet
 {
+	[mainWindow makeKeyAndOrderFront:nil];
 	[NSApp beginSheet:configureSheet
 	   modalForWindow:mainWindow
 		modalDelegate:nil
