@@ -8,11 +8,13 @@
 #import "AppController.h"
 #import "DragView.h"
 #import "ImageCompressor.h"
+#import "PreferenceController.h"
 #import "LoadingViewController.h"
 #import "TableData.h"
 
-NSString * const windowPosKey = @"LastWindowPosition";
+NSString * const windowPosKey   = @"LastWindowPosition";
 NSString * const squashLevelKey = @"LastSquashLevel";
+NSString * const pngoutPathKey  = @"pngoutPath";
 
 // Easy-to-use macro for alert errors
 // NOTE: Remember, this is not modal
@@ -42,6 +44,42 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 	if (sliderValue != nil) {
 		[levelSlider setIntValue:[sliderValue intValue]];
 	}
+
+	// Check if pngout has been downloaded
+	NSString *path = [userDefaults valueForKey:pngoutPathKey];
+
+	// Search for it if it hasn't.
+	if (path == nil) {
+		NSFileManager *manager = [NSFileManager defaultManager];
+		NSArray *pathsToCheck = [[NSArray alloc] initWithObjects:
+			@"/usr/bin/pngout", @"/usr/local/bin/pngout",
+			[@"~/bin/pngout" stringByExpandingTildeInPath], nil];
+
+		for (NSString *path in pathsToCheck) {
+			if ([manager isExecutableFileAtPath:path]) {
+				[self setPngoutPath:path];
+				break;
+			}
+		}
+
+		[pathsToCheck release];
+	} else {
+		[self setPngoutPath:path];
+	}
+	DLog(@"pngout path: %@", pngoutPath);
+}
+
+- (void)setPngoutPath:(NSString *)path
+{
+	[path retain];
+	[pngoutPath release];
+	pngoutPath = path;
+}
+
+- (void)handleTextChange:(NSNotification *)note
+{
+	DLog(@"Setting pngout path to: %@", [note valueForKey:@"object"]);
+	[self setPngoutPath:[note valueForKey:@"object"]];
 }
 
 - (void)dealloc
@@ -49,6 +87,11 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 	[loadingViewController release];
 	[dragView setDelegate:nil];
 	[NSApp setDelegate:nil];
+	if (preferenceController != nil) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
+		[preferenceController release];
+	}
+
 	[super dealloc];
 }
 
@@ -96,6 +139,7 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 	fileCount = [imagefiles count];
 	images = [[ImageCompressor alloc] init];
 	[images setDelegate:self];
+	[images setPngoutPath:pngoutPath];
 
 	// compressorCount is only initialized after this method
 	[images compressFiles:imagefiles
@@ -184,7 +228,9 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 // Show main window when app becomes active after being hidden.
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification
 {
-	[mainWindow makeKeyAndOrderFront:nil];
+	if (![mainWindow isVisible]) {
+		[mainWindow makeKeyAndOrderFront:nil];
+	}
 }
 
 // User dragged items to dock icon
@@ -226,6 +272,11 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 	NSNumber *sliderValue = [NSNumber numberWithInt:[levelSlider intValue]];
 	[userDefaults setObject:sliderValue forKey:squashLevelKey];
 	DLog(@"Saving squash level: %@", sliderValue);
+
+	// Save pngout path
+	if (pngoutPath != nil) {
+		[userDefaults setObject:pngoutPath forKey:pngoutPathKey];
+	}
 }
 
 #pragma mark Menu items
@@ -268,11 +319,29 @@ NSString * const squashLevelKey = @"LastSquashLevel";
 	[filetypes release];
 }
 
+- (IBAction)showPreferencePanel:(id)sender
+{
+	if (preferenceController == nil) {
+		preferenceController = [[PreferenceController alloc] init];
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc addObserver:self
+			   selector:@selector(handleTextChange:)
+				   name:pngoutPathChangedNotification
+				 object:nil];
+	}
+
+	[preferenceController showWindow:self];
+	if (pngoutPath != nil) {
+		[preferenceController setValue:pngoutPath
+							forKeyPath:@"browseField.stringValue"];
+	}
+}
+
 // Help > PNGSquash Help
 - (IBAction)showHelp:(id)sender
 {
-	NSRunAlertPanel(@"Help", @"Seriously? Just drag a PNG.",
-	                @"Okay, fine!", nil, nil);
+	NSRunAlertPanel(@"Help?", @"Um, just drag a PNG.",
+	                @"OK", nil, nil);
 }
 
 #pragma mark DragView delegate methods

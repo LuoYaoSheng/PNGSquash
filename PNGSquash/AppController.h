@@ -9,9 +9,11 @@
 @class DragView;
 @class ImageCompressor;
 @class LoadingViewController;
+@class PreferenceController;
 
 extern NSString * const windowPosKey;
 extern NSString * const squashLevelKey;
+extern NSString * const pngoutPathKey;
 
 @interface AppController : NSObject
 {
@@ -22,16 +24,20 @@ extern NSString * const squashLevelKey;
 	IBOutlet NSSlider *levelSlider;
 
 	NSArray *imagefiles;
+	NSString *pngoutPath;
 	ImageCompressor *images;
 	unsigned int fileCount;
+	PreferenceController *preferenceController;
 	LoadingViewController *loadingViewController;
 }
 
 - (IBAction)openFile:(id)sender;
 - (IBAction)showMainWindow:(id)sender;
+- (IBAction)showPreferencePanel:(id)sender;
 - (IBAction)showHelp:(id)sender;
 - (IBAction)compressFiles:(id)sender;
 - (IBAction)cancelSheet:(id)sender;
+- (void)setPngoutPath:(NSString *)path;
 - (void)showConfigureSheet;
 - (void)cleanupView;
 

@@ -13,6 +13,8 @@
 	NSString *outfile; // The file currently being compressed
 	NSString *infile; // The file moved to the trash
 	NSTask *currentTask;
+	NSString *pngoutPath;
+
 	unsigned int imageIndex, progIndex; // Index of current image/compressor
 	unsigned int level; // Compression level
 	unsigned int outfilesCount;
@@ -23,6 +25,7 @@
 }
 
 @property (nonatomic, retain) id delegate;
+@property (nonatomic, retain) NSString *pngoutPath;
 @property (readonly) unsigned int compressorCount;
 
 - (void)compressFiles:(NSArray *)files
