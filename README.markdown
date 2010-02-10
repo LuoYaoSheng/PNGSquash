@@ -1,4 +1,4 @@
-#[Download here![](http://img29.imageshack.us/img29/5589/squash.png)](http://s3.amazonaws.com/PNGSquash/PNGSquash.tar.gz)
+#[Download here![](http://cloud.github.com/downloads/msanders/PNGSquash/squash.png)](http://cloud.github.com/downloads/msanders/PNGSquash/PNGSquash.tar.gz)
 
 ## Description
 
@@ -10,7 +10,7 @@ Currently requires OS X 10.5 or later.
 
 ## Screenshots
 
-![Main window](http://img188.imageshack.us/img188/9510/33685433.png) ![Compressing window](http://img41.imageshack.us/img41/503/12281826.png)
+![Main window](http://cloud.github.com/downloads/msanders/PNGSquash/main-window.png) ![Compressing window](http://cloud.github.com/downloads/msanders/PNGSquash/compressing-window.png)
 
 ## License
 
