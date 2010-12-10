@@ -1,4 +1,4 @@
-#[Download here![](http://cloud.github.com/downloads/msanders/PNGSquash/squash.png)](http://cloud.github.com/downloads/msanders/PNGSquash/PNGSquash.tar.gz)
+#[Download here![](https://github.com/downloads/msanders/PNGSquash/squash.png)](https://github.com/downloads/msanders/PNGSquash/PNGSquash.tar.gz)
 
 ## Description
 
@@ -10,8 +10,8 @@ Currently requires OS X 10.5 or later.
 
 ## Screenshots
 
-![Main window](http://cloud.github.com/downloads/msanders/PNGSquash/main-window.png) ![Compressing window](http://cloud.github.com/downloads/msanders/PNGSquash/compressing-window.png)
+![Main window](https://github.com/downloads/msanders/PNGSquash/main-window.png) ![Compressing window](https://github.com/downloads/msanders/PNGSquash/compressing-window.png)
 
 ## License
 
-PNGSquash is released under the [zlib/libpng License](http://github.com/msanders/PNGSquash/blob/master/LICENSE.txt).
+PNGSquash is released under the [zlib/libpng License](https://github.com/msanders/PNGSquash/blob/master/LICENSE.txt).
