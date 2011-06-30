@@ -21,7 +21,7 @@ body {
 	font-size:12px;
 	margin:0 20px;
 
-	background:transparent url(images/shadow.png) 50% 0 no-repeat;
+	background:transparent url(images/shadow.png) no-repeat 50% 0;
 }
 
 body, a {
@@ -38,7 +38,7 @@ a:hover {
 	padding:0 661px 0 0;
 	width:425px;
 	min-height:618px;
-	background:url(images/macbook.png) 100% 170px no-repeat;
+	background:url(images/macbook.png) no-repeat 100% 170px;
 	text-align:right;
 }
 
